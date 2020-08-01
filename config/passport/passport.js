@@ -4,12 +4,13 @@
 // used to secure password
 var bCrypt = require("bcrypt-nodejs");
 
-module.exports = function(passport, user){
+module.exports = function(passport, user, userLanguage){
 
-    var User = user;
+    var User = user; // Used to load a new user or query existing user
+    var User_language = userLanguage; // Used to load the languages
     var LocalStrategy = require("passport-local").Strategy;
 
-    passport.use("local-signup", new LocalStrategy(
+    passport.use("local-creation", new LocalStrategy(
         {
             // by default, local strategy users username and password
             // we will override with email
@@ -36,19 +37,34 @@ module.exports = function(passport, user){
                 where: {email: email}
             }).then(function(user){
 
-                // if user exists, than exit
+                // if user exists, then exit
                 if(user){
                     return done(null, false, {
                         message: "That email is already taken"
                     })
                 }
                 else{
+                    // Create the object to load to the User model
                     var data = {
                         email: email,
                         password: generateHash(password),
-                        firstName: req.body.firstName, // might have to rename first name to "name"
-                        lastName: req.body.lastName // Might need to delete last name
+                        firstname: req.body.firstname, // might have to rename first name to "name"
+                        lastname: req.body.lastname // Might need to delete last name
                     };
+
+
+                    var languageProperties = [];
+                    var propertyNames = Object.getOwnPropertyNames(req.body);
+
+                    // Looking for any languages the user entered
+                    for(var i = 0; i < propertyNames.length; i++){
+                        
+                        var propertyName = propertyNames[i].toLowerCase();
+
+                        if(propertyName.includes("language")){
+                            languageProperties.push(propertyName);
+                        }
+                    }
 
                     // if the user does not exist, than we create it
                     User.create(data).then(function(newUser, created){
@@ -56,6 +72,29 @@ module.exports = function(passport, user){
                             return done(null, false);
                         }
 
+                        var userId = newUser.id;
+
+                        if(languageProperties.length > 0){
+
+                            for(var i = 0; i < languageProperties.length; i++){
+                                var lang = languageProperties[i];
+                               
+                                var userLang = {
+                                    UserId: userId,
+                                    language_name: req.body[lang]
+                                }
+
+                                User_language.create(userLang).then(function(userLanguage, created){
+                                    if(!userLanguage){
+                                        return done(null, false);
+                                    }
+                                });
+                                // languageProperties[lang] = req.body[lang];
+                            }
+
+                        }
+                      
+                        // If the user is created successfully
                         if(newUser){
                             return done(null, newUser); // This needs to be captured by the calling function
                         }

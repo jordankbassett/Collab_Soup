@@ -11,12 +11,22 @@ module.exports = function(app, passport) {
   // app.get('/signin', authController.signin);
 
 
-  app.post('/signup', passport.authenticate('local-signup', {
+  function isLoggedIn(req, res, next){
+
+    if(req.isAuthenticated()) return next();
+
+    // If not authenticated, then redirect to the signin page
+    res.redirect("/creation");
+  }
+
+  
+  app.post('/creation', passport.authenticate('local-creation', {
 
           // successRedirect: '/dashboard',
           successRedirect: '/profile',
 
-          failureRedirect: '/signup'
+          failureRedirect: '/creation'
+
       }
 
   ));
@@ -25,27 +35,19 @@ module.exports = function(app, passport) {
   app.post('/signin', passport.authenticate('local-signin', {
 
           // successRedirect: '/dashboard',
-          successRedirect: '/profile',
-  
-          failureRedirect: '/signin'
+          successRedirect: "/profile",
+
+          failureRedirect: "/"
       }
   
   ));
 
 
   // make sure the page can only be accessed when a user is logged into the session
-  app.get('/dashboard', isLoggedIn, authController.dashboard);
-  // app.get('/profile', isLoggedIn, authController.profile);
+  // app.get('/dashboard', isLoggedIn, authController.dashboard);
+  app.get('/profile', isLoggedIn, authController.profile);
 
-  app.get('/logout',authController.logout);
-
-
-  function isLoggedIn(req, res, next){
-    
-    if(req.isAuthenticated()) return next();
-
-    res.redirect("/signin");
-  }
+  app.get('/logout', authController.logout);
 
 
    // Load index page
@@ -56,55 +58,11 @@ module.exports = function(app, passport) {
   });
 
 
-  app.get("/creation", function (req, res) {
-    res.render("creation");
-  });
+  app.get("/creation", authController.creation);
 
 
-  app.get("/about", function (req, res) {
-    res.render("about", {
-      msg: "about page"
-    });
-  });
+  app.get("/about", authController.about);
 
 
-  app.get("/feed", function (req, res) {
-    res.render("feed", {
-      msg: "Feed page"
-    });
-  });
-
-
-  app.get("/profile/:id", function (req, res) {
-    var userId = req.params.id;
-
-    db.User.findAll({ where: { id: userId } }).then(function (dbUser) {
-      res.render("profile", { example: dbUser[0].dataValues});
-      console.log(dbUser[0].dataValues);
-    });
-  })
-
-  // Render 404 page for any unmatched routes
-  app.get("*", function (req, res) {
-    res.render("404");
-  });
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  app.get("/feed", authController.feed);
+};

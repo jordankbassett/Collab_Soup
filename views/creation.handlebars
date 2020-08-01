@@ -1,63 +1,110 @@
+
 <div class="container" id="createCon">
+
     <div class="box has-text-centered">
-        <div class="columns is-centered">
-            <div class="control has-icons-left">
-                <input class="input is-large" id="accountUserName" type="name" placeholder="Username">
-                <span class="icon is-medium is-left">
-                    <i class="fas fa-user"></i>
-                </span>
-            </div>
 
-        </div>
-        </br>
-        <div class="columns is-centered">
-            <div class="control has-icons-left">
-                <input class="input is-large" id="accountEmail" type="email" placeholder="Email">
-                <span class="icon is-medium is-left">
-                    <i class="fas fa-envelope"></i>
-                </span>
-            </div>
-        </div>
-        </br>
-        <div class="columns is-centered">
-            <div class="control has-icons-left">
-                <input class="input is-large" id="emailConfirm" type="email" placeholder="Retype email">
-                <span class="icon is-medium is-left">
-                    <i class="fas fa-envelope"></i>
-                </span>
-            </div>
-        </div>
-        </br>
-        <div class="columns is-centered">
-            <div class="field">
-                <p class="control has-icons-left">
-                    <input class="input is-large" id="accountPassword" type="password" placeholder="Password">
-                    <span class="icon is-large is-left">
-                        <i class="fas fa-lock"></i>
+         <form id="signup" name="creation" method="post" action="/creation">
+            
+
+
+            <div class="columns is-centered">
+                <div class="control has-icons-left">
+                    
+                    <input class="text input is-large" name="email" type="email" placeholder="Email"/>
+
+                    <span class="icon is-medium is-left">
+                        <i class="fas fa-envelope"></i>
                     </span>
-                </p>
+                </div>
+
             </div>
-        </div>
-        </br>
-        <div class="columns is-centered">
-            <div class="field">
-                <p class="control has-icons-left">
-                    <input class="input is-large" id="passwordConfirm" type="password" placeholder="Retype password">
-                    <span class="icon is-large is-left">
-                        <i class="fas fa-lock"></i>
+            {{!-- End of Email --}}
+
+            </br>
+
+            <div class="columns is-centered">
+                <div class="control has-icons-left">
+                    
+                    <input class="text input is-large" name="firstname" type="text" placeholder="First Name" />
+
+                    <span class="icon is-medium is-left">
+                        <i class="fas fa-user"></i>
                     </span>
-                </p>
-            </div>
-        </div>
+                </div>
 
-        <div class="columns is-centered">
-            <p id="accountConfirm" class="has-text-danger has-text-centered"></p>
-        </div>
-
-        <div class="columns">
-            <div class="column">
-                <button class="button is-success" id="accountCreate">Submit</button>
             </div>
-        </div>
+            {{!-- End of First Name --}}
+
+            </br>
+
+            <div class="columns is-centered">
+                <div class="control has-icons-left">
+                    
+                    <input class="text input is-large" name="lastname" type="text" placeholder="Last Name"/>
+
+                    <span class="icon is-medium is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </div>
+
+            </div>
+            {{!-- End of Last Name --}}
+
+            </br>
+
+             <div class="columns is-centered">
+                 <div class="field">
+                    <p class="control has-icons-left">
+                        
+                        <input class="input is-large" name="password" type="password" placeholder="Password"/>
+                        <span class="icon is-large is-left">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                    </p>
+                </div>
+
+            </div>
+            {{!-- End of Password --}}
+
+
+            {{!-- We are going to load the Software Languages 
+            the user knows down here --}}
+            <div id="softwareLanguage">
+
+            </div>
+            {{!-- /End of Software Language --}}
+
+            <br>
+
+            <div class="columns is-centered">
+                <div class="field">
+                    <br>
+                    <p id="addMoreLanguages" >Do you know any software languages?</p>
+                    <br>
+                    <span id="addSoftwareLanguage"  class="icon is-large is-left">
+                        <i class="fas fa-plus-circle"></i>
+                    </span>
+                </div>
+            </div>
+
+            <br>
+            
+            <div class="columns">
+                <div class="column">
+                    <input class="btn button is-success" type="submit" value="Sign Up" />
+                    {{!-- <button class="button is-success" id="accountCreate">Submit</button> --}}
+                </div>
+            </div>
+            {{!-- End of Submit --}}
+            
+            
+        </form>
+
     </div>
 </div>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script defer src="/js/all.js"></script>
+<script src="/js/index.js"></script>
+<script src="/js/creation.js"></script>
